@@ -43,7 +43,7 @@ public class StringFetcherStreamReader implements FetcherStreamReader {
         int len;
         
         // Use an array buffer rather than reading in to String, otherwise we create lots of String
-        // objects that need garbage collected.
+        // objects that need garbage collecting.
         while ((len = reader.read(buf, 0, 1024)) != -1) {
             sb.append(buf, 0, len);
         }
