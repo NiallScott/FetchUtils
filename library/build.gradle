@@ -18,7 +18,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         minSdkVersion 4
@@ -31,10 +31,17 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            testCoverageEnabled true
+        }
+    }
+    jacoco {
+        version = "0.7.1.201405082137"
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-annotations:21.0.2'
+    compile 'com.android.support:support-annotations:21.0.3'
+    compile 'com.android.support:support-v4:21.0.3'
 }
