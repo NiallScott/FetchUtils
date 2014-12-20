@@ -38,6 +38,24 @@ android {
     jacoco {
         version = "0.7.1.201405082137"
     }
+
+    android.libraryVariants.all { variant ->
+        /*
+         * This task generates JavaDoc.
+         */
+        task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
+            description "Generates Javadoc for $variant.name"
+            title = "FetchUtils for Android JavaDoc"
+            source = variant.javaCompile.source
+            classpath = files(variant.javaCompile.classpath.files, android.bootClasspath)
+            options {
+                linksOffline("http://d.android.com/reference",
+                        "${android.sdkDirectory}/docs/reference")
+            }
+            exclude '**/BuildConfig.java'
+            exclude '**/R.java'
+        }
+    }
 }
 
 dependencies {

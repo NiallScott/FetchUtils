@@ -81,9 +81,9 @@ import uk.org.rivernile.android.fetchutils.loaders.Result;
  * @author Niall Scott
  * @param <D> The type of data that will be returned from this {@link Loader}. For a type that
  *           encapsulates a success or failure result, see {@link Result}.
- * @see android.support.v4.content.Loader;
- * @see android.support.v4.app.LoaderManager;
- * @see android.support.v4.content.AsyncTaskLoader;
+ * @see android.support.v4.content.Loader
+ * @see android.support.v4.app.LoaderManager
+ * @see android.support.v4.content.AsyncTaskLoader
  * @see uk.org.rivernile.android.fetchutils.loaders.Result
  */
 public abstract class SimpleAsyncTaskLoader<D> extends AsyncTaskLoader<D> {
