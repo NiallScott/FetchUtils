@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/NiallScott/FetchUtils.svg)](https://travis-ci.org/NiallScott/FetchUtils)
+
 FetchUtils
 ==========
 
