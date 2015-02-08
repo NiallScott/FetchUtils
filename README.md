@@ -24,7 +24,8 @@ Forking and pull requests are welcome.
 
 It is acknowledged that there are better developed libraries out there for doing this sort of thing.
 This library does not attempt to compete with these libraries. This libraries merely attempts to do
-a small amount of things well, reliably and is easy to use with only basic knowledge required.
+a small amount of things well, reliably and is easy to use with only basic knowledge required for
+most things.
 
 Licence
 -------
@@ -96,11 +97,63 @@ unblocks, the Fetcher will deal with tearing down the stream.
 Caveat: the whole process is blocking. There is no attempt at dealing with threading in this part of
 the library. Android already has good ways at dealing with threading, such as using
 [Loaders](http://developer.android.com/guide/components/loaders.html) in UI code, and
-[AsyncTask](http://developer.android.com/reference/android/os/AsyncTask.html) in non-UI code. Soon
-this library will contain an extension of
-[AsyncTaskLoader](http://developer.android.com/reference/android/content/AsyncTaskLoader.html) that
-deals with a shortcoming of the platform version to deliver any data that is loaded in a blocking
-way on its own thread and is operated asynchronously with the UI thread.
+[AsyncTask](http://developer.android.com/reference/android/os/AsyncTask.html) in non-UI code. You
+may wish to use `SimpleAsyncTaskLoader` included in this library to perform asynchronous operations
+from the UI.
+
+### Loaders
+
+Read the Android documentation about Loaders
+[here](http://developer.android.com/guide/components/loaders.html). Understanding this is critical
+before using the Loader helper classes in this library.
+
+Loaders are an advanced Android topic. They were introduced in Android 3.0 (Honeycomb) to get around
+the problem of asynchronously loading data in to a user interface that can be destroyed and
+recreated. This is because of Android's UI lifecycle - Activities can be destroyed and recreated due
+to system configuration changes. For example, this may happen when the device is rotated or the
+system language is changed. This is default behaviour and can be overridden - but this is
+[discouraged by the engineers at Google](http://developer.android.com/guide/topics/manifest/activity-element.html#config).
+
+When the user interface is destroyed and recreated, the reference to the loaded data is lost in the
+process as new object instances are used. It could be possible to get the data again by initiating
+another load (typically AsyncTasks were used), persisting the data on disk (SQLite database, files)
+or some convoluted and complicated solution to keep it in memory during rotation.
+
+Loaders makes this much easier for us. It deals with the persistence of the data in memory during
+the re-creation of the user interface. Once the user interface is ready again, it simply connects
+back to the Loader and it can get the previously loaded data.
+
+There are other benefits to Loaders and documenting them extensively here is beyond the scope of
+this document.
+
+Loaders are also available in the v4 compatibility library, making their functionality available
+from Android 1.6 (Donut).
+
+**Why are Loaders mentioned here?**
+
+Good question.
+
+Many of Google's examples of usage of Loaders depends on using a
+[CursorLoader](http://developer.android.com/reference/android/content/CursorLoader.html). What if
+you want to load data from another source, such as a JSON document over the network, and not persist
+it in a database? Then you may use an
+[AsyncTaskLoader](http://developer.android.com/reference/android/content/AsyncTaskLoader.html)
+(`CursorLoader` actually extends from `AsyncTaskLoader`). The default
+[Loader](http://developer.android.com/reference/android/content/Loader.html) class does not provide
+any background threading at all - this is provided by `AsyncTaskLoader`, which, as you might have
+guessed, is backed by an
+[AsyncTask](http://developer.android.com/reference/android/os/AsyncTask.html).
+
+But there's a problem with `AsyncTaskLoader`. It does not deliver its data as expected with its
+lifecycle - and is poorly documented. Provided by this library is an extended `AsyncTaskLoader` that
+does deliver the data correctly by doing what `CursorLoader` does (albeit without the `Cursor`
+stuff).
+
+Please see the documentation for `SimpleAyncTaskLoader` to see how it works and for a code example.
+Two versions of the class has been provided: one that extends the platform's `AsyncTaskLoader` (can
+be used on API 11+) and one that extends `AsyncTaskLoader` from the compatibility library (can be
+used on API 4+). It goes without saying that the compatibility library needs to be included before
+the compatibility `SimpleAsyncTaskLoader` can be used.
 
 Usage
 -----
@@ -201,10 +254,119 @@ try {
 Again, the **fetchers** and **readers** can be used in any combination that makes sense, so they are
 flexible.
 
+### SimpleAsyncTaskLoader
+
+This class exists in two forms: one which extends from the platform's `AsyncTaskLoader` (API level
+11+) and one which extends from the v4 compatibility library `AsyncTaskLoader`. Be sure to use the
+correct one for your needs when importing the class.
+
+```java
+import uk.org.rivernile.android.fetchutils.loaders.SimpleAsyncTaskLoader;
+```
+
+**or**
+
+```java
+import uk.org.rivernile.android.fetchutils.loaders.support.SimpleAsyncTaskLoader;
+```
+
+`SimpleAsyncTaskLoader` is an abstract class - it's up to you to provide the implementation for what
+you want to load asynchronously. It may be a call to the network or to read from a file. **Tip:**
+you may want to use the Fetcher-Reader mechanism in your implementation.
+
+`Result` is a class used to encapsulate the result of a load. Loaders can only return one object to
+their caller upon completion, so a `Result` object is used to hold a success object and a failure
+object. It's up to you what data is returned from the `Loader` - `Result` merely provides an easy
+way to return a success object and a failure object. In this object, the failure state can only
+accept an object that is of the type `Exception` or its descendants. If this is not suitable, then
+you may create your own class that can be returned by the `Loader`.
+
+Here is a code example of a `SimpleAsyncTaskLoader` returning a `String`;
+
+```java
+public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
+
+    // The URL to connect to.
+    private final String url;
+
+    public HttpAsyncTaskLoader(final Context context, final String url) {
+        // Super needs to be called with a valid Context object.
+        super(context);
+
+        // Arguments are sent in to the constructor.
+        this.url = url;
+    }
+
+    @Override
+    public String loadInBackground() {
+        // The Fetcher using the URL passed in to the constructor.
+        final HttpFetcher fetcher = new HttpFetcher(url, false);
+        final StringFetcherStreamReader reader = new StringFetcherStreamReader();
+
+        try {
+            fetcher.executeFetcher(reader);
+            // If fetching was successful, return the data in the reader.
+            return reader.getData();
+        } catch (IOException e) {
+            // If it failed, return null.
+            return null;
+        }
+    }
+}
+```
+
+Here is a code example, similar to above, that uses a `Result` instead;
+
+```java
+public class HttpResultAsyncTaskLoader extends AsyncTaskLoader<Result<String, IOException>> {
+
+    // The URL to connect to.
+    private final String url;
+
+    public HttpResultAsyncTaskLoader(final Context context, final String url) {
+        // Super needs to be called with a valid Context object.
+        super(context);
+
+        // Arguments are sent in to the constructor.
+        this.url = url;
+    }
+
+    @Override
+    public Result<String, IOException> loadInBackground() {
+        // The Fetcher using the URL passed in to the constructor.
+        final HttpFetcher fetcher = new HttpFetcher(url, false);
+        final StringFetcherStreamReader reader = new StringFetcherStreamReader();
+
+        try {
+            fetcher.executeFetcher(reader);
+            // If fetching was successful, return the data in the reader via the Result object.
+            return new Result<String, IOException>(reader.getData());
+        } catch (IOException e) {
+            // If it failed, pass the Exception in to the Result object.
+            return new Result<String, IOException>(e);
+        }
+    }
+}
+```
+
+...and where you handle your `Loader` callbacks, most probably in your `Activity` or `Fragment`;
+
+```java
+...
+public void onLoadFinished(Loader<Result<String, IOException>> loader,
+                           Result<String, IOException> data) {
+    if (data.isError()) {
+        doSuccessThing(data.getSuccess());
+    } else {
+        doErrorThing(data.getError());
+    }
+}
+...
+```
+
 To do
 -----
 
-- Include `SimpleResultLoader`
 - Distribute the library via Maven as an AAR (Android Archive) for easily including in projects
 - Generate Javadoc
 - Add ability for `HttpFetcher` to customise the user agent
@@ -214,6 +376,13 @@ To do
 
 Versions
 --------
+
+### 1.0.1 (in development)
+
+- Added `SimpleAsyncTaskLoader`
+- Added Javadoc generation task to `build.gradle`
+- Added integration with Travis CI server
+- Added Maven Central push support
 
 ### 1.0
 
