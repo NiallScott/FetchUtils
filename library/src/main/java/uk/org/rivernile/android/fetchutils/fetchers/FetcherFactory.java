@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Niall Scott
+ * Copyright (C) 2014 - 2015 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import android.support.annotation.Nullable;
  * depending on the supplied {@link Uri}.
  * 
  * @author Niall Scott
- * @see #getFetcher(android.content.Context, android.net.Uri, boolean)
+ * @see #getFetcher(android.content.Context, android.net.Uri)
  */
 public final class FetcherFactory {
     
@@ -47,7 +47,7 @@ public final class FetcherFactory {
      * is based on the scheme in the {@link Uri} object.
      *
      * <p>
-     * The following are supported;
+     *     The following are supported;
      * 
      *     <ul>
      *         <li>{@code http://<host>[:port]/[path]}</li>
@@ -56,29 +56,37 @@ public final class FetcherFactory {
      *         <li>{@code file://<path>}</li>
      *     </ul>
      * </p>
+     *
+     * <p>
+     *     Note: this will return the most simply configured {@link Fetcher}. If a {@link Fetcher}
+     *     has more configuration options beyond setting a path or a URL, then you will need to
+     *     write your own factory which deals with different schemes. It is possible to instantiate
+     *     {@link Fetcher}s directly.
+     * </p>
      * 
      * @param context A {@link Context} instance. Must not be {@code null}.
      * @param uri The {@link Uri} of the data to be fetched. If this is set as {@code null}, then
      *            this method will return {@code null}. If the {@link Uri} is incomplete, such as if
      *            it contains a {@code file://} scheme without a path, {@code null} will be
      *            returned.
-     * @param allowRedirects Some {@link Fetcher}s allow the path to be redirected. Set this to
-     *                       {@code false} to prevent this from happening.
      * @return An appropriate {@link Fetcher} for the given {@link Uri}, or {@code null} if there is
      *         no suitable {@link Fetcher}s or {@code uri} is
      *         set as {@code null}.
      */
-    public static Fetcher getFetcher(@NonNull final Context context, @Nullable final Uri uri,
-            final boolean allowRedirects) {
+    public static Fetcher getFetcher(@NonNull final Context context, @Nullable final Uri uri) {
         if (uri == null) {
             return null;
         }
         
         final String scheme = uri.getScheme();
+
         try {
             if (SCHEME_HTTP.equalsIgnoreCase(scheme) ||
                     SCHEME_HTTPS.equalsIgnoreCase(scheme)) {
-                return new HttpFetcher(uri.toString(), allowRedirects);
+                // Return the most simply configured HttpFetcher instance.
+                return new HttpFetcher.Builder(context)
+                        .setUrl(uri.toString())
+                        .build();
             } else if (SCHEME_ASSET.equalsIgnoreCase(scheme)) {
                 return new AssetFileFetcher(context, uri.getPath());
             } else if (SCHEME_FILE.equalsIgnoreCase(scheme)) {

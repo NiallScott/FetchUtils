@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Niall Scott
+ * Copyright (C) 2014 - 2015 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 
 package uk.org.rivernile.android.fetchutils.fetchers;
+
+import android.support.annotation.Nullable;
 
 import java.io.IOException;
 
@@ -44,7 +46,7 @@ public class UrlMismatchException extends IOException {
      * 
      * @param detailMessage The message.
      */
-    public UrlMismatchException(final String detailMessage) {
+    public UrlMismatchException(@Nullable final String detailMessage) {
         super(detailMessage);
     }
 }

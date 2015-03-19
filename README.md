@@ -32,7 +32,7 @@ Licence
 
 This project uses the Apache 2.0 licence, as defined below.
 
-    Copyright (C) 2014 Niall Scott
+    Copyright (C) 2014 - 2015 Niall Scott
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
@@ -286,6 +286,8 @@ Here is a code example of a `SimpleAsyncTaskLoader` returning a `String`;
 ```java
 public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
 
+    // Context is required.
+    private final Context context;
     // The URL to connect to.
     private final String url;
 
@@ -294,13 +296,17 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
         super(context);
 
         // Arguments are sent in to the constructor.
+        this.context = context;
         this.url = url;
     }
 
     @Override
     public String loadInBackground() {
         // The Fetcher using the URL passed in to the constructor.
-        final HttpFetcher fetcher = new HttpFetcher(url, false);
+        final HttpFetcher.Builder builder = new HttpFetcher.Builder(context);
+        builder.setUrl(url)
+                .setAllowHostRedirects(false);
+        final HttpFetcher fetcher = builder.build();
         final StringFetcherStreamReader reader = new StringFetcherStreamReader();
 
         try {
@@ -320,6 +326,8 @@ Here is a code example, similar to above, that uses a `Result` instead;
 ```java
 public class HttpResultAsyncTaskLoader extends AsyncTaskLoader<Result<String, IOException>> {
 
+    // Context is required.
+    private final Context context;
     // The URL to connect to.
     private final String url;
 
@@ -328,13 +336,17 @@ public class HttpResultAsyncTaskLoader extends AsyncTaskLoader<Result<String, IO
         super(context);
 
         // Arguments are sent in to the constructor.
+        this.context = context;
         this.url = url;
     }
 
     @Override
     public Result<String, IOException> loadInBackground() {
         // The Fetcher using the URL passed in to the constructor.
-        final HttpFetcher fetcher = new HttpFetcher(url, false);
+        final HttpFetcher.Builder builder = new HttpFetcher.Builder(context);
+        builder.setUrl(url)
+                .setAllowHostRedirects(false);
+        final HttpFetcher fetcher = builder.build();
         final StringFetcherStreamReader reader = new StringFetcherStreamReader();
 
         try {
@@ -369,7 +381,6 @@ To do
 
 - Distribute the library via Maven as an AAR (Android Archive) for easily including in projects
 - Generate Javadoc
-- Add ability for `HttpFetcher` to customise the user agent
 - Add ability to make `HttpFetcher` also accept data to be posted up to the server
 - Improve unit tests
 - Add an example project
@@ -377,7 +388,18 @@ To do
 Versions
 --------
 
-### 1.0.1 (in development)
+### 1.1 (in development)
+
+- More comprehensive API for `HttpFetcher` to match
+  [HttpURLConnection](https://developer.android.com/reference/java/net/HttpURLConnection.html) as
+  much as possible
+- If the calling application has the permission `ACCESS_NETWORK_STATE`, then `HttpFetcher` will
+  check connectivity with
+  [ConnectivityManager](https://developer.android.com/reference/android/net/ConnectivityManager.html)
+  prior to attempting the connection
+
+
+### 1.0.1 (development - never released)
 
 - Added `SimpleAsyncTaskLoader`
 - Added Javadoc generation task to `build.gradle`
