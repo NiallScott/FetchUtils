@@ -4,20 +4,23 @@ jdk: oraclejdk7
 
 env:
   matrix:
-    - ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-22 ANDROID_ABI=armeabi-v7a
 
 android:
   components:
+    # android-19 is used to run the tests on
     - platform-tools
     - tools
     - build-tools-22.0.0
     - $ANDROID_TARGET
+    - android-19
     - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
+    - sys-img-${ANDROID_ABI}-android-19
     - extra-android-m2repository
 
 before_script:
   # Create and start emulator
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - echo no | android create avd --force -n test -t android-19 --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
