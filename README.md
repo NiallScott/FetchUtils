@@ -397,6 +397,8 @@ Versions
   check connectivity with
   [ConnectivityManager](https://developer.android.com/reference/android/net/ConnectivityManager.html)
   prior to attempting the connection
+- Target latest Android version (API level 22)
+- Update to latest Android Gradle version and latest build tools
 
 
 ### 1.0.1 (development - never released)
