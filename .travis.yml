@@ -4,11 +4,11 @@ jdk: oraclejdk7
 
 env:
   matrix:
-    - ANDROID_TARGET=android-21 ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-22 ANDROID_ABI=armeabi-v7a
 
 android:
   components:
-    - build-tools-21.1.2
+    - build-tools-22.0.0
     - $ANDROID_TARGET
     - extra-android-m2repository
 
