@@ -158,32 +158,14 @@ the compatibility `SimpleAsyncTaskLoader` can be used.
 Usage
 -----
 
-This project only supports the Gradle build system from Android Studio version 1.0 (and possibly
-any newer versions).
+To use this library in your project, add the following as a dependency inside your `build.gradle`
+for the module that this library will be used in;
 
-At the moment, to include this library in your project, you will need to check out the source tree
-as a sub directory inside your existing Android project and add a reference to the project inside
-your `settings.gradle` and `build.gradle` for the module that is using it. In the near future, the
-project will be made available in Maven for easy including within a project.
-
-For example, suppose your project is structured as so (irrelevant directories and files not shown)
-and you want to add FetchUtils as a dependency of the `app` module;
-
+```Gradle
+dependencies {
+    compile 'uk.org.rivernile.android.fetchutils:fetchutils-library:1.1'
+}
 ```
-YourProject/
-    ` app/
-        ` build.gradle
-    ` FetchUtils
-        ` library/
-    ` settings.gradle
-```
-
-Then you would do the following;
-
-- Add `':FetchUtils:library'` to the `include` line of `YourProject/settings.gradle`
-- Add `'compile project(':FetchUtils:library')` under the `dependencies` block inside
-  `YourProject/app/build.gradle`
-- Synchronise the project with the Gradle files
 
 ### Fetcher - Reader
 
@@ -376,11 +358,14 @@ public void onLoadFinished(Loader<Result<String, IOException>> loader,
 ...
 ```
 
+Javadoc
+-------
+
+See [http://www.rivernile.org.uk/projects/fetchutils/1.1/docs/](http://www.rivernile.org.uk/projects/fetchutils/1.1/docs/)
+
 To do
 -----
 
-- Distribute the library via Maven as an AAR (Android Archive) for easily including in projects
-- Generate Javadoc
 - Add ability to make `HttpFetcher` also accept data to be posted up to the server
 - Improve unit tests
 - Add an example project
@@ -388,7 +373,7 @@ To do
 Versions
 --------
 
-### 1.1 (in development)
+### 1.1
 
 - More comprehensive API for `HttpFetcher` to match
   [HttpURLConnection](https://developer.android.com/reference/java/net/HttpURLConnection.html) as
@@ -399,6 +384,7 @@ Versions
   prior to attempting the connection
 - Target latest Android version (API level 22)
 - Update to latest Android Gradle version and latest build tools
+- The project is now distributed via Maven Central
 
 
 ### 1.0.1 (development - never released)
