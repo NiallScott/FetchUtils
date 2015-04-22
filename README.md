@@ -266,7 +266,7 @@ you may create your own class that can be returned by the `Loader`.
 Here is a code example of a `SimpleAsyncTaskLoader` returning a `String`;
 
 ```java
-public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
+public class HttpAsyncTaskLoader extends SimpleAsyncTaskLoader<String> {
 
     // Context is required.
     private final Context context;
@@ -306,7 +306,7 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
 Here is a code example, similar to above, that uses a `Result` instead;
 
 ```java
-public class HttpResultAsyncTaskLoader extends AsyncTaskLoader<Result<String, IOException>> {
+public class HttpResultAsyncTaskLoader extends SimpleAsyncTaskLoader<Result<String, IOException>> {
 
     // Context is required.
     private final Context context;
