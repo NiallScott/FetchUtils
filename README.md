@@ -373,6 +373,12 @@ To do
 Versions
 --------
 
+### 1.1.1
+
+- Fixed a crash that could occur in `HttpFetcher` when there is a connectivity problem
+- Updated library dependency versions
+- There have been no API changes in this release
+
 ### 1.1
 
 - More comprehensive API for `HttpFetcher` to match
