@@ -209,6 +209,13 @@ public class HttpFetcher implements Fetcher {
                 in = conn.getInputStream();
             } catch (IOException e) {
                 in = conn.getErrorStream();
+
+                if (in == null) {
+                    // This happens when the error happened before reaching the server
+                    // (connectivity, DNS unresolvable etc). In this case, throw the exception down
+                    // to the caller.
+                    throw e;
+                }
             }
             
             if (!allowHostRedirects && !u.getHost().equals(conn.getURL().getHost())) {
