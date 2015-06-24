@@ -36,7 +36,7 @@ android {
         }
     }
     jacoco {
-        version = "0.7.1.201405082137"
+        version = "0.7.4.201502262128"
     }
 
     android.libraryVariants.all { variant ->
@@ -77,8 +77,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-annotations:22.0.0'
-    compile 'com.android.support:support-v4:22.0.0'
+    compile 'com.android.support:support-annotations:22.2.0'
+    compile 'com.android.support:support-v4:22.2.0'
 }
 
 apply from: '../gradle-mvn-push.gradle'
