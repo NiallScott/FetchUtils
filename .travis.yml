@@ -4,14 +4,14 @@ jdk: oraclejdk7
 
 env:
   matrix:
-    - ANDROID_TARGET=android-22 ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-23 ANDROID_ABI=armeabi-v7a
 
 android:
   components:
     # android-19 is used to run the tests on
     - platform-tools
     - tools
-    - build-tools-22.0.1
+    - build-tools-23.0.1
     - $ANDROID_TARGET
     - android-19
     - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
