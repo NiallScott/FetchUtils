@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Niall Scott
+ * Copyright (C) 2014 - 2016 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,6 +90,7 @@ public class FileWriterFetcherStreamReader implements FetcherStreamReader {
      * 
      * @return A {@link File} object, describing the file that the data will be written out to.
      */
+    @NonNull
     public File getFile() {
         return file;
     }

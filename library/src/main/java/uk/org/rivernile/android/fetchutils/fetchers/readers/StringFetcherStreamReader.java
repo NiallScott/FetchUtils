@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Niall Scott
+ * Copyright (C) 2014 - 2016 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package uk.org.rivernile.android.fetchutils.fetchers.readers;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -58,10 +59,12 @@ public class StringFetcherStreamReader implements FetcherStreamReader {
      * @return The data read from the stream as a {@link String}, or {@code null} if it has not yet
      * been read from or there was an error while reading it.
      */
+    @Nullable
     public String getData() {
         return data;
     }
 
+    @Nullable
     @Override
     public String toString() {
         return getData();

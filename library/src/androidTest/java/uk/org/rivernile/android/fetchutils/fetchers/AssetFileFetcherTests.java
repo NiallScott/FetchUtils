@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Niall Scott
+ * Copyright (C) 2014 - 2016 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,14 @@
 
 package uk.org.rivernile.android.fetchutils.fetchers;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import android.graphics.Bitmap;
-import android.test.InstrumentationTestCase;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +31,8 @@ import java.io.IOException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import uk.org.rivernile.android.fetchutils.fetchers.readers.BitmapFetcherStreamReader;
 import uk.org.rivernile.android.fetchutils.fetchers.readers.FileWriterFetcherStreamReader;
@@ -32,34 +40,30 @@ import uk.org.rivernile.android.fetchutils.fetchers.readers.JSONFetcherStreamRea
 import uk.org.rivernile.android.fetchutils.fetchers.readers.StringFetcherStreamReader;
 
 /**
- * Tests for {@link AssetFileFetcher}. This {@link InstrumentationTestCase} is also used to test the
- * execution of the {@link FetcherStreamReader} classes as storing test data in the assets is
- * easier.
+ * Tests for {@link AssetFileFetcher}. This test is also used to test the execution of the
+ * {@link FetcherStreamReader} classes as storing test data in the assets is easier.
  * 
  * @author Niall Scott
  */
-public class AssetFileFetcherTests extends InstrumentationTestCase {
+@RunWith(AndroidJUnit4.class)
+public class AssetFileFetcherTests {
     
     /**
      * Test that an {@link IllegalArgumentException} is thrown when the file name is set to blank.
      */
+    @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithEmptyFilename() {
-        try {
-            new AssetFileFetcher(getInstrumentation().getContext(), "");
-        } catch (IllegalArgumentException e) {
-            return;
-        }
-        
-        fail("The context is set to null, so an IllegalArgumentException should be thrown.");
+        new AssetFileFetcher(InstrumentationRegistry.getContext(), "");
     }
     
     /**
      * Test that the file name that is passed in the constructor matches what is returned in the
      * getter.
      */
+    @Test
     public void testGetFilename() {
         final AssetFileFetcher fetcher =
-                new AssetFileFetcher(getInstrumentation().getContext(), "test");
+                new AssetFileFetcher(InstrumentationRegistry.getContext(), "test");
         assertEquals("test", fetcher.getFilePath());
     }
     
@@ -67,30 +71,25 @@ public class AssetFileFetcherTests extends InstrumentationTestCase {
      * Test that an {@link IOException} is thrown when an invalid file name is passed to the
      * {@link AssetFileFetcher} and is executed.
      */
-    public void testInvalidFilename() {
+    @Test(expected = IOException.class)
+    public void testInvalidFilename() throws IOException {
         final AssetFileFetcher fetcher =
-                new AssetFileFetcher(getInstrumentation().getContext(), "invalid");
-        
-        try {
-            fetcher.executeFetcher(new StringFetcherStreamReader());
-        } catch (IOException e) {
-            return;
-        }
-        
-        fail("An invalid filename was set so an IOException should be thrown.");
+                new AssetFileFetcher(InstrumentationRegistry.getContext(), "invalid");
+        fetcher.executeFetcher(new StringFetcherStreamReader());
     }
     
     /**
      * Test that a {@link Bitmap} can be successfully read.
      * 
      * @throws IOException This test is not expected to throw an {@link IOException}, so if it is
-     * thrown, let the {@link InstrumentationTestCase} cause a failure.
+     * thrown, let the test fail.
      */
+    @Test
     public void testBitmap() throws IOException {
         final AssetFileFetcher fetcher =
-                new AssetFileFetcher(getInstrumentation().getContext(), "fetchers/redsquare.png");
+                new AssetFileFetcher(InstrumentationRegistry.getContext(),
+                        "fetchers/redsquare.png");
         final BitmapFetcherStreamReader reader = new BitmapFetcherStreamReader();
-        
         fetcher.executeFetcher(reader);
         
         final Bitmap bitmap = reader.getBitmap();
@@ -103,11 +102,12 @@ public class AssetFileFetcherTests extends InstrumentationTestCase {
      * Test that no {@link Bitmap} is set when an invalid/corrupt {@link Bitmap} file is read from.
      * 
      * @throws IOException This test is not expected to throw an {@link IOException}, so if it is
-     * thrown, let the {@link InstrumentationTestCase} cause a failure.
+     * thrown, let the test fail.
      */
+    @Test
     public void testInvalidBitmap() throws IOException {
         final AssetFileFetcher fetcher =
-                new AssetFileFetcher(getInstrumentation().getContext(),
+                new AssetFileFetcher(InstrumentationRegistry.getContext(),
                         "fetchers/not_an_image.png");
         final BitmapFetcherStreamReader reader = new BitmapFetcherStreamReader();
         fetcher.executeFetcher(reader);
@@ -121,13 +121,14 @@ public class AssetFileFetcherTests extends InstrumentationTestCase {
      * This makes sure that data is overwritten.
      * 
      * @throws IOException This test is not expected to throw an {@link IOException}, so if it is
-     * thrown, let the {@link InstrumentationTestCase} cause a failure.
+     * thrown, let the test fail.
      */
+    @Test
     public void testFileWriterWithoutAppend() throws IOException {
         final AssetFileFetcher assetFetcher =
-                new AssetFileFetcher(getInstrumentation().getContext(), "fetchers/example.txt");
+                new AssetFileFetcher(InstrumentationRegistry.getContext(), "fetchers/example.txt");
         final File outFile =
-                new File(getInstrumentation().getTargetContext().getFilesDir(), "out.txt");
+                new File(InstrumentationRegistry.getTargetContext().getFilesDir(), "out.txt");
         final FileWriterFetcherStreamReader assetReader =
                 new FileWriterFetcherStreamReader(outFile, false);
         
@@ -152,13 +153,14 @@ public class AssetFileFetcherTests extends InstrumentationTestCase {
      * This makes sure that data is appended.
      * 
      * @throws IOException This test is not expected to throw an {@link IOException}, so if it is
-     * thrown, let the {@link InstrumentationTestCase} cause a failure.
+     * thrown, let the test fail.
      */
+    @Test
     public void testFileWriterWithAppend() throws IOException {
         final AssetFileFetcher assetFetcher =
-                new AssetFileFetcher(getInstrumentation().getContext(), "fetchers/example.txt");
+                new AssetFileFetcher(InstrumentationRegistry.getContext(), "fetchers/example.txt");
         final File outFile =
-                new File(getInstrumentation().getTargetContext().getFilesDir(), "out.txt");
+                new File(InstrumentationRegistry.getTargetContext().getFilesDir(), "out.txt");
         final FileWriterFetcherStreamReader assetReader =
                 new FileWriterFetcherStreamReader(outFile, true);
         
@@ -181,11 +183,12 @@ public class AssetFileFetcherTests extends InstrumentationTestCase {
      * Test that a file containing {@link String} data can be read from.
      * 
      * @throws IOException This test is not expected to throw an {@link IOException}, so if it is
-     * thrown, let the {@link InstrumentationTestCase} cause a failure.
+     * thrown, let the test fail.
      */
+    @Test
     public void testStringReader() throws IOException {
         final AssetFileFetcher fetcher =
-                new AssetFileFetcher(getInstrumentation().getContext(), "fetchers/example.txt");
+                new AssetFileFetcher(InstrumentationRegistry.getContext(), "fetchers/example.txt");
         final StringFetcherStreamReader reader = new StringFetcherStreamReader();
         fetcher.executeFetcher(reader);
         
@@ -196,13 +199,13 @@ public class AssetFileFetcherTests extends InstrumentationTestCase {
      * Test that a {@link JSONObject} can be read from.
      * 
      * @throws IOException This test is not expected to throw an {@link IOException}, so if it is
-     * thrown, let the {@link InstrumentationTestCase} cause a failure.
-     * @throws JSONException This test is not expected to be thrown, so if it is, let the
-     * {@link InstrumentationTestCase} fail the test.
+     * thrown, let the test fail.
+     * @throws JSONException This test is not expected to be thrown, so if it is, let the test fail.
      */
+    @Test
     public void testJSONObject() throws IOException, JSONException {
         final AssetFileFetcher fetcher =
-                new AssetFileFetcher(getInstrumentation().getContext(),
+                new AssetFileFetcher(InstrumentationRegistry.getContext(),
                         "fetchers/example_object.json");
         final JSONFetcherStreamReader reader = new JSONFetcherStreamReader();
         fetcher.executeFetcher(reader);
@@ -215,13 +218,13 @@ public class AssetFileFetcherTests extends InstrumentationTestCase {
      * Test that a {@link JSONArray} can be read from.
      * 
      * @throws IOException This test is not expected to throw an {@link IOException}, so if it is
-     * thrown, let the {@link InstrumentationTestCase} cause a failure.
-     * @throws JSONException This test is not expected to be thrown, so if it is, let the
-     * {@link InstrumentationTestCase} fail the test.
+     * thrown, let the test fail.
+     * @throws JSONException This test is not expected to be thrown, so if it is, let the test fail.
      */
+    @Test
     public void testJSONArray() throws IOException, JSONException {
         final AssetFileFetcher fetcher =
-                new AssetFileFetcher(getInstrumentation().getContext(),
+                new AssetFileFetcher(InstrumentationRegistry.getContext(),
                         "fetchers/example_array.json");
         final JSONFetcherStreamReader reader = new JSONFetcherStreamReader();
         fetcher.executeFetcher(reader);

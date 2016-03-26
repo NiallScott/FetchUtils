@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Niall Scott
+ * Copyright (C) 2014 - 2016 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,5 +37,5 @@ public interface FetcherStreamReader {
      * @param stream The {@link InputStream}.
      * @throws IOException When an {@link IOException} occurs.
      */
-    public void readInputStream(@NonNull InputStream stream) throws IOException;
+    void readInputStream(@NonNull InputStream stream) throws IOException;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Niall Scott
+ * Copyright (C) 2014 - 2016 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,56 +16,47 @@
 
 package uk.org.rivernile.android.fetchutils.fetchers.readers;
 
-import junit.framework.TestCase;
+import android.support.test.runner.AndroidJUnit4;
 
 import org.json.JSONException;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Tests for {@link JSONFetcherStreamReader}.
  * 
  * @author Niall Scott
  */
-public class JSONFetcherStreamReaderTests extends TestCase {
+@RunWith(AndroidJUnit4.class)
+public class JSONFetcherStreamReaderTests {
     
     private JSONFetcherStreamReader reader;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        
+    @Before
+    public void setUp() throws Exception {
         reader = new JSONFetcherStreamReader();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        
+    @After
+    public void tearDown() throws Exception {
         reader = null;
     }
     
     /**
      * Test that a {@link JSONException} is thrown when the data is {@code null}.
      */
-    public void testGetJSONObjectWithNullData() {
-        try {
-            reader.getJSONObject();
-        } catch (JSONException e) {
-            return;
-        }
-        
-        fail("The data is null, so attempting to get a JSONObject should yield a JSONException.");
+    @Test(expected = JSONException.class)
+    public void testGetJSONObjectWithNullData() throws JSONException {
+        reader.getJSONObject();
     }
     
     /**
      * Test that a {@link JSONException} is thrown when the data is {@code null}.
      */
-    public void testGetJSONArrayWithNullData() {
-        try {
-            reader.getJSONArray();
-        } catch (JSONException e) {
-            return;
-        }
-        
-        fail("The data is null, so attempting to get a JSONArray should yield a JSONException.");
+    @Test(expected = JSONException.class)
+    public void testGetJSONArrayWithNullData() throws JSONException {
+        reader.getJSONArray();
     }
 }

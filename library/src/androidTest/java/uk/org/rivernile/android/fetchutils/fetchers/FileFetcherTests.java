@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Niall Scott
+ * Copyright (C) 2014 - 2016 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,35 +16,37 @@
 
 package uk.org.rivernile.android.fetchutils.fetchers;
 
-import java.io.File;
+import android.support.test.runner.AndroidJUnit4;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.io.File;
 
 /**
  * Tests for {@link FileFetcher}.
  * 
  * @author Niall Scott
  */
-public class FileFetcherTests extends TestCase {
+@RunWith(AndroidJUnit4.class)
+public class FileFetcherTests {
     
     /**
      * Test that an {@link IllegalArgumentException} is thrown if the {@code filePath} is set as an
      * empty {@link String}.
      */
+    @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithEmptyFilePath() {
-        try {
-            new FileFetcher("");
-        } catch (IllegalArgumentException e) {
-            return;
-        }
-        
-        fail("The filePath was set as empty, so an IllegalArgumentException should be thrown.");
+        new FileFetcher("");
     }
     
     /**
      * Test that the {@link File} instance that is returned by the getter is correct after passing
      * the {@code filePath} in the constructor.
      */
+    @Test
     public void testConstructorWithValidFilePath() {
         final File file = new File("test");
         final FileFetcher fetcher = new FileFetcher("test");
@@ -56,6 +58,7 @@ public class FileFetcherTests extends TestCase {
      * Test that the file instance this is returned by the getter is correct after passing the
      * {@link File} in the constructor.
      */
+    @Test
     public void testConstructorWithValidFile() {
         final File file = new File("test");
         final FileFetcher fetcher = new FileFetcher(file);

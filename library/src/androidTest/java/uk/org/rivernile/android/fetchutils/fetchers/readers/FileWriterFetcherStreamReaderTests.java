@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Niall Scott
+ * Copyright (C) 2014 - 2016 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,34 +16,38 @@
 
 package uk.org.rivernile.android.fetchutils.fetchers.readers;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import android.support.test.runner.AndroidJUnit4;
+
 import java.io.File;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Tests for {@link FileWriterFetcherStreamReader}.
  * 
  * @author Niall Scott
  */
-public class FileWriterFetcherStreamReaderTests extends TestCase {
+@RunWith(AndroidJUnit4.class)
+public class FileWriterFetcherStreamReaderTests {
     
     /**
      * Test that the constructor throws an {@link IllegalArgumentException} when given an empty
      * {@code filePath}.
      */
+    @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithEmptyFilePath() {
-        try {
-            new FileWriterFetcherStreamReader("", false);
-        } catch (IllegalArgumentException e) {
-            return;
-        }
-        
-        fail("The filePath was set to empty, so IllegalArgumentException should be thrown.");
+        new FileWriterFetcherStreamReader("", false);
     }
     
     /**
      * Test that the values passed in to the constructor match the getter methods.
      */
+    @Test
     public void testConstructorForFileWithAppend() {
         final File file = new File("test");
         final FileWriterFetcherStreamReader reader = new FileWriterFetcherStreamReader(file, true);
@@ -55,6 +59,7 @@ public class FileWriterFetcherStreamReaderTests extends TestCase {
     /**
      * Test that the values passed in to the constructor match the getter methods.
      */
+    @Test
     public void testConstructorForFileWithNoAppend() {
         final File file = new File("test");
         final FileWriterFetcherStreamReader reader = new FileWriterFetcherStreamReader(file, false);
@@ -66,6 +71,7 @@ public class FileWriterFetcherStreamReaderTests extends TestCase {
     /**
      * Test that the values passed in to the constructor match the getter methods.
      */
+    @Test
     public void testConstructorForFilePathWithAppend() {
         final File file = new File("test");
         final FileWriterFetcherStreamReader reader = new FileWriterFetcherStreamReader("test", true);
@@ -77,6 +83,7 @@ public class FileWriterFetcherStreamReaderTests extends TestCase {
     /**
      * Test that the values passed in to the constructor match the getter methods.
      */
+    @Test
     public void testConstructorForFilePathWithNoAppend() {
         final File file = new File("test");
         final FileWriterFetcherStreamReader reader =

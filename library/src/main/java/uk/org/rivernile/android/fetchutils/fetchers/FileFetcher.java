@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Niall Scott
+ * Copyright (C) 2014 - 2016 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,6 +82,7 @@ public class FileFetcher implements Fetcher {
      * 
      * @return A {@link File} object describing the file that this instance points at.
      */
+    @NonNull
     public File getFile() {
         return file;
     }

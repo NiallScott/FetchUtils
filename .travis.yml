@@ -11,7 +11,7 @@ android:
     # android-19 is used to run the tests on
     - platform-tools
     - tools
-    - build-tools-23.0.1
+    - build-tools-23.0.2
     - $ANDROID_TARGET
     - android-19
     - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}

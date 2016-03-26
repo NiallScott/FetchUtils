@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Niall Scott
+ * Copyright (C) 2015 - 2016 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,18 @@
 
 package uk.org.rivernile.android.fetchutils.fetchers;
 
-import android.test.InstrumentationTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.net.Proxy;
 import java.util.Map;
@@ -26,49 +37,40 @@ import java.util.Map;
  *
  * @author Niall Scott
  */
-public class HttpFetcherTests extends InstrumentationTestCase {
+@RunWith(AndroidJUnit4.class)
+public class HttpFetcherTests {
 
     /**
      * Test that attempting to build a {@link HttpFetcher} with a {@code null} URL throws an
      * {@link IllegalArgumentException}.
      */
+    @Test(expected = IllegalArgumentException.class)
     public void testBuilderWithNullUrl() {
         final HttpFetcher.Builder builder =
-                new HttpFetcher.Builder(getInstrumentation().getTargetContext());
+                new HttpFetcher.Builder(InstrumentationRegistry.getTargetContext());
         builder.setUrl(null);
-
-        try {
-            builder.build();
-        } catch (IllegalArgumentException e) {
-            return;
-        }
-
-        fail("The URL is set as null, so an IllegalArgumentException should be thrown.");
+        builder.build();
     }
 
     /**
      * Test that attempting to build a {@link HttpFetcher} with an empty URL throws an
      * {@link IllegalArgumentException}.
      */
+    @Test(expected = IllegalArgumentException.class)
     public void testBuilderWithEmptyUrl() {
         final HttpFetcher.Builder builder =
-                new HttpFetcher.Builder(getInstrumentation().getTargetContext());
+                new HttpFetcher.Builder(InstrumentationRegistry.getTargetContext());
         builder.setUrl("");
-
-        try {
-            builder.build();
-        } catch (IllegalArgumentException e) {
-            return;
-        }
-
-        fail("The URL is set as empty, so an IllegalArgumentException should be thrown.");
+        builder.build();
     }
 
     /**
      * Test that the default values used when not set externally are as expected.
      */
+    @Test
     public void testDefaultValues() {
-        final HttpFetcher fetcher = new HttpFetcher.Builder(getInstrumentation().getTargetContext())
+        final HttpFetcher fetcher = new HttpFetcher.Builder(
+                        InstrumentationRegistry.getTargetContext())
                 .setUrl("http://example.com/")
                 .build();
 
@@ -89,8 +91,10 @@ public class HttpFetcherTests extends InstrumentationTestCase {
     /**
      * Test that the builder behaves correctly when non-default values are used.
      */
+    @Test
     public void testBuilderWithNonDefaultValues() {
-        final HttpFetcher fetcher = new HttpFetcher.Builder(getInstrumentation().getTargetContext())
+        final HttpFetcher fetcher = new HttpFetcher.Builder(
+                        InstrumentationRegistry.getTargetContext())
                 .setUrl("http://example.com/")
                 .setProxy(Proxy.NO_PROXY)
                 .setAllowHostRedirects(false)

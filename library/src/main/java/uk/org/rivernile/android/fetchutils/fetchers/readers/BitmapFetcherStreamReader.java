@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Niall Scott
+ * Copyright (C) 2014 - 2016 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package uk.org.rivernile.android.fetchutils.fetchers.readers;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,6 +51,7 @@ public class BitmapFetcherStreamReader implements FetcherStreamReader {
      * @return An instance of {@link Bitmap} which contains the image data, or {@code null} if the
      * data has yet to be fetched, or if there was an error.
      */
+    @Nullable
     public Bitmap getBitmap() {
         return bitmap;
     }

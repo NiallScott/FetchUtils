@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Niall Scott
+ * Copyright (C) 2014 - 2016 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,5 +46,5 @@ public interface Fetcher {
      * @throws IOException When there was a problem during the fetching process. This may be
      *                     because, for example, of a network or a missing file.
      */
-    public void executeFetcher(@NonNull FetcherStreamReader reader) throws IOException;
+    void executeFetcher(@NonNull FetcherStreamReader reader) throws IOException;
 }

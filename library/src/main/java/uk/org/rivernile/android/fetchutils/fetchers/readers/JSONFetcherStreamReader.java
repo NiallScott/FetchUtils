@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Niall Scott
+ * Copyright (C) 2014 - 2016 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 
 package uk.org.rivernile.android.fetchutils.fetchers.readers;
+
+import android.support.annotation.NonNull;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +39,7 @@ public class JSONFetcherStreamReader extends StringFetcherStreamReader {
      * @throws JSONException If there was an error parsing the JSON text, such as when the data does
      * not represent a {@link JSONObject}.
      */
+    @NonNull
     public JSONObject getJSONObject() throws JSONException {
         final String data = getData();
         
@@ -54,6 +57,7 @@ public class JSONFetcherStreamReader extends StringFetcherStreamReader {
      * @throws JSONException If there was an error parsing the JSON text, such as when the data does
      * not represent a {@link JSONArray}.
      */
+    @NonNull
     public JSONArray getJSONArray() throws JSONException {
         final String data = getData();
         

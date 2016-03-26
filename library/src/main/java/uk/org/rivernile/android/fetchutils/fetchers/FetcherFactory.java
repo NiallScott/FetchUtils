@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 - 2015 Niall Scott
+ * Copyright (C) 2014 - 2016 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,6 +73,7 @@ public final class FetcherFactory {
      *         no suitable {@link Fetcher}s or {@code uri} is
      *         set as {@code null}.
      */
+    @Nullable
     public static Fetcher getFetcher(@NonNull final Context context, @Nullable final Uri uri) {
         if (uri == null) {
             return null;
@@ -81,8 +82,7 @@ public final class FetcherFactory {
         final String scheme = uri.getScheme();
 
         try {
-            if (SCHEME_HTTP.equalsIgnoreCase(scheme) ||
-                    SCHEME_HTTPS.equalsIgnoreCase(scheme)) {
+            if (SCHEME_HTTP.equalsIgnoreCase(scheme) || SCHEME_HTTPS.equalsIgnoreCase(scheme)) {
                 // Return the most simply configured HttpFetcher instance.
                 return new HttpFetcher.Builder(context)
                         .setUrl(uri.toString())

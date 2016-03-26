@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Niall Scott
+ * Copyright (C) 2014 - 2016 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,34 +16,35 @@
 
 package uk.org.rivernile.android.fetchutils.fetchers.readers;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertNull;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for {@link StringFetcherStreamReader}.
  * 
  * @author Niall Scott
  */
-public class StringFetcherStreamReaderTests extends TestCase {
+public class StringFetcherStreamReaderTests {
     
     private StringFetcherStreamReader reader;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        
+    @Before
+    public void setUp() throws Exception {
         reader = new StringFetcherStreamReader();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        
+    @After
+    public void tearDown() throws Exception {
         reader = null;
     }
     
     /**
      * Test that {@link StringFetcherStreamReader#getData()} returns {@code null} by default.
      */
+    @Test
     public void testGetDataReturnsNullByDefault() {
         assertNull(reader.getData());
     }
@@ -51,6 +52,7 @@ public class StringFetcherStreamReaderTests extends TestCase {
     /**
      * Test that {@link StringFetcherStreamReader#toString()} returns {@code null} by default.
      */
+    @Test
     public void testToStringReturnsNullByDefault() {
         assertNull(reader.toString());
     }

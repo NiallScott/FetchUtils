@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Niall Scott
+ * Copyright (C) 2014 - 2016 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,25 @@
 
 package uk.org.rivernile.android.fetchutils.loaders;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 /**
  * Tests for {@link Result}.
  */
-public class ResultTests extends TestCase {
+public class ResultTests {
 
     /**
      * Test that the success constructor can accept {@code null} data and the other object methods
      * return correct values when the object is in the success state.
      */
+    @Test
     public void testSuccessConstructorWithNullObject() {
-        final Result<String, IllegalArgumentException> result =
-                new Result<String, IllegalArgumentException>((String) null);
+        final Result<String, IllegalArgumentException> result = new Result<>((String) null);
         assertFalse(result.isError());
         assertNull(result.getSuccess());
         assertNull(result.getError());
@@ -40,10 +45,10 @@ public class ResultTests extends TestCase {
      * from the getter, and the other object methods return correct values when the object is in the
      * success state.
      */
+    @Test
     public void testSuccessConstructorWithNonNullObject() {
         final String successData = "This is success data.";
-        final Result<String, IllegalArgumentException> result =
-                new Result<String, IllegalArgumentException>(successData);
+        final Result<String, IllegalArgumentException> result = new Result<>(successData);
         assertFalse(result.isError());
         assertSame(successData, result.getSuccess());
         assertNull(result.getError());
@@ -54,10 +59,10 @@ public class ResultTests extends TestCase {
      * from the getter, and the other object methods return correct values when the object is in the
      * failure state.
      */
+    @Test
     public void testFailureConstructor() {
         final IllegalArgumentException ex = new IllegalArgumentException();
-        final Result<String, IllegalArgumentException> result =
-                new Result<String, IllegalArgumentException>(ex);
+        final Result<String, IllegalArgumentException> result = new Result<>(ex);
         assertTrue(result.isError());
         assertNull(result.getSuccess());
         assertSame(ex, result.getError());
