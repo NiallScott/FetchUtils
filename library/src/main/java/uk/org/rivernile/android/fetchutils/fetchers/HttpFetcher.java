@@ -122,6 +122,10 @@ import java.util.Map;
  *     </ul>
  * </p>
  *
+ * <h3>Alternative implementations</h3>
+ * OkHttp3 is supported by the {@link OkHttp3Fetcher} class. Its design is quite different to the
+ * way this class works.
+ *
  * <h3>TODO</h3>
  * TODO: implement HTTPS specific methods (HTTPS is supported, but not customisable).<br/>
  * TODO: implement posting content to a server.

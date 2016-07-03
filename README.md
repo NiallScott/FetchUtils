@@ -32,7 +32,7 @@ Licence
 
 This project uses the Apache 2.0 licence, as defined below.
 
-    Copyright (C) 2014 - 2015 Niall Scott
+    Copyright (C) 2014 - 2016 Niall Scott
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
@@ -175,6 +175,7 @@ Select a **fetcher** class;
 - `FileFetcher` - used to fetch the contents of a
   [File](http://developer.android.com/reference/java/io/File.html) on disk
 - `HttpFetcher` - used to fetch the contents of data at a given URL from a HTTP server
+- `OkHttp3Fetcher` - used to fetch the contents of data from a OkHttp3 response
 - Or create your own `Fetcher` by creating a class and implementing `Fetcher`
 
 ...then select a **reader** class;
@@ -372,6 +373,13 @@ To do
 
 Versions
 --------
+
+### 1.2
+- Added support for OkHttp3 fetching in `OkHttp3Fetcher`
+- Updated project unit tests to use JUnit4 and moved some tests to run on the JVM rather than
+  instrumented
+- Updated library dependency versions
+- Apart from the addition of `OkHttp3`, there have been no other API changes in this release
 
 ### 1.1.1
 
