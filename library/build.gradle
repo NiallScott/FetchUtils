@@ -75,13 +75,13 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-annotations:24.2.0'
-    provided 'com.android.support:support-v4:24.2.0'
+    compile 'com.android.support:support-annotations:24.2.1'
+    provided 'com.android.support:support-v4:24.2.1'
     provided 'com.squareup.okhttp3:okhttp:3.4.1'
 
-    androidTestCompile 'com.android.support:support-annotations:24.2.0'
-    androidTestCompile 'com.android.support.test:runner:0.4.1'
-    androidTestCompile 'com.android.support.test:rules:0.4.1'
+    androidTestCompile 'com.android.support:support-annotations:24.2.1'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test:rules:0.5'
 
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.okhttp3:okhttp:3.4.1'
