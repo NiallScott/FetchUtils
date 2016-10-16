@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/NiallScott/FetchUtils.svg)](https://travis-ci.org/NiallScott/FetchUtils)
+[![CircleCI](https://circleci.com/gh/NiallScott/FetchUtils/tree/development.svg?style=svg)](https://circleci.com/gh/NiallScott/FetchUtils/tree/development)
 
 FetchUtils
 ==========
