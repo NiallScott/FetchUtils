@@ -18,7 +18,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         minSdkVersion 9
@@ -75,11 +75,11 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-annotations:25.0.1'
-    provided 'com.android.support:support-v4:25.0.1'
+    compile 'com.android.support:support-annotations:25.1.0'
+    provided 'com.android.support:support-v4:25.1.0'
     provided 'com.squareup.okhttp3:okhttp:3.5.0'
 
-    androidTestCompile 'com.android.support:support-annotations:25.0.1'
+    androidTestCompile 'com.android.support:support-annotations:25.1.0'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
 
