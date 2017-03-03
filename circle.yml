@@ -16,7 +16,6 @@ test:
     - circle-android wait-for-boot
     - ./gradlew clean check connectedAndroidTest
     # Get the data from the build for reporting.
-    - cp library/build/test-results/debug/*.xml $CIRCLE_TEST_REPORTS
+    - cp library/build/test-results/testDebugUnitTest/*.xml $CIRCLE_TEST_REPORTS
     - cp library/build/outputs/androidTest-results/*/*.xml $CIRCLE_TEST_REPORTS
     - cp -r library/build/reports/ $CIRCLE_ARTIFACTS
-    - cp -r library/build/outputs/lint-* $CIRCLE_ARTIFACTS
